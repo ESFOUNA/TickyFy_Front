@@ -1,0 +1,257 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ✅ Fullscreen background */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  background: url('/stadium.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ✅ Navbar Styling */
+.navbar {
+  width: 100%;
+  height: 60px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* ✅ Tickefy Logo */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+/* ✅ Navigation Links - aligned right */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ✅ General Link Style */
+.nav-links a {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+  position: relative; /* Added for positioning the pseudo-element */
+  padding: 8px 12px; /* Added padding to give space for the rectangle */
+}
+
+/* ✅ Hover effect with rounded rectangle */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0); /* Start scaled down */
+  width: calc(100% + 8px); /* Slightly wider than the link */
+  height: calc(100% + 4px); /* Slightly taller than the link */
+  background: rgba(255, 255, 255, 0.9); /* High opacity white */
+  border-radius: 12px; /* Rounded borders */
+  z-index: -1; /* Behind the link text */
+  transition: transform 0.3s ease-in-out; /* Smooth scaling animation */
+}
+
+.nav-links a:hover::after {
+  transform: translate(-50%, -50%) scale(1); /* Scale up to full size on hover */
+}
+
+.nav-links a:hover {
+  color: black; /* Change text color to contrast with the white background */
+}
+
+/* ✅ Highlighted Support Link */
+.nav-links .highlighted {
+  color: #a6ff00;
+  font-weight: bold;
+}
+
+/* ✅ Profile Container */
+.profile-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* ✅ Profile Image */
+.profile-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ✅ Dropdown Icon */
+.dropdown-icon {
+  color: white;
+  font-size: 14px;
+}
+
+/* ✅ Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background-color: #181818;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  text-align: left;
+  background: none;
+  border: none;
+  width: 100%;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  background-color: #282828;
+}
+
+/* ✅ Logout button styling explicitly */
+.logout-btn {
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.logout-btn:hover {
+  background-color: #ffdddd;
+  color: #ff0000;
+}
+
+/* ✅ Dropdown animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Login & Signup Container */
+.auth-container {
+  width: 420px;
+  padding: 30px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15); /* Transparent white */
+  backdrop-filter: blur(12px); /* Blur effect */
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ✅ General input fields */
+.input-field {
+  width: 100%;
+  padding: 10px 15px; /* Updated from 14px */
+  border-radius: 20px; /* Updated from 12px */
+  background-color: rgba(255, 255, 255, 0.3); /* Updated from 0.2 opacity */
+  color: white;
+  backdrop-filter: blur(8px); /* Added backdrop-filter */
+  border: none;
+  outline: none;
+}
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.8); /* Updated from 0.9 opacity */
+}
+
+/* ✅ Phone Input specific styling */
+.phone-input {
+  width: 100%;
+}
+
+.phone-button {
+  border-radius: 12px 0 0 12px !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border: none !important;
+}
+
+/* ✅ Buttons */
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ✅ Social Buttons */
+.facebook-btn, .google-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+}
+
+/* Facebook */
+.facebook-btn {
+  background: #1877f2;
+  color: white;
+}
+
+/* Google */
+.google-btn {
+  background: white;
+  color: black;
+  border: 1px solid #ddd;
+  width: 100%;
+  padding: 12px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
