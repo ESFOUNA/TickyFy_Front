@@ -4,18 +4,47 @@ import { useAuth } from "../context/AuthContext";
 import FacebookLogin from "../components/FacebookLogin";
 import { FcGoogle } from "react-icons/fc"; // Google logo
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import API_BASE_URL from "../api/api";
+import { getProfile } from "../api/user"; // Added import for getProfile
 
 const Login = () => {
-  const { login } = useAuth();
-
-  const { user } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
+  
+  // State for email and password inputs
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (user) navigate('/', { replace: true });
   }, [user, navigate]);
-  
+
+  // Handle form submission for email/password login
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post(`${API_BASE_URL}/auth/login`, {
+        email,
+        password,
+      });
+
+      const { jwt } = res.data;
+      localStorage.setItem("token", jwt);
+
+      // ✅ Fetch user profile after saving token
+      const userData = await getProfile();
+      login(userData);
+
+      navigate("/");
+    } catch (err: any) {
+      console.error("Login error", err.response?.data || err.message);
+      alert("Login failed.");
+    }
+  };
+
   return (
     <div className="auth-container">
       {/* ✅ Logo above title */}
@@ -72,9 +101,23 @@ const Login = () => {
       <div className="text-center my-2 text-white">OR</div>
 
       {/* ✅ Input Fields */}
-      <form className="space-y-3 w-full">
-        <input type="email" placeholder="Your email" className="input-field" />
-        <input type="password" placeholder="Your password" className="input-field" />
+      <form className="space-y-3 w-full" onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Your email"
+          className="input-field"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Your password"
+          className="input-field"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
         {/* ✅ Login Button */}
         <button type="submit" className="auth-button bg-white text-black shadow-xl">
