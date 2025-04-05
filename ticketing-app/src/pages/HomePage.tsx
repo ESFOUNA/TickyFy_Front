@@ -5,31 +5,7 @@ const HomePage = () => {
   return (
     <div className="w-full min-h-screen flex flex-col bg-gray-900 text-white">
       {/* Header */}
-      <header className="w-full bg-black bg-opacity-80 py-11 px-6 flex justify-between items-center">
-        <div className="text-xl font-bold">Tickefy</div>
-        <div className="flex items-center space-x-4">
-          <input
-            type="text"
-            placeholder="Search a specific Ticket"
-            className="px-4 py-2 rounded-lg bg-gray-800 text-white"
-          />
-          <Link to="/signup" className="text-green-400">
-            Sign up
-          </Link>
-          <Link to="/login" className="text-green-400">
-            Login
-          </Link>
-          <Link to="/ticketlist" className="text-green-400">
-            Ticket List
-          </Link>
-          <Link to="/cart" className="text-green-400">
-            Cart
-          </Link>
-          <Link to="/support" className="text-green-400">
-            Support
-          </Link>
-        </div>
-      </header>
+      
 
       {/* Main Content */}
       <div

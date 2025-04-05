@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { FaChevronDown, FaSignOutAlt } from "react-icons/fa";
+import { FaChevronDown, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 
 const Navbar = () => {
@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -20,8 +20,8 @@ const Navbar = () => {
         setDropdownOpen(false);
       }
     };
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown);
+    document.addEventListener("click", closeDropdown);
+    return () => document.removeEventListener("click", closeDropdown);
   }, []);
 
   return (
@@ -42,11 +42,12 @@ const Navbar = () => {
         {user && (
           <div ref={dropdownRef} className="profile-container">
             <img
-              src={user.picture}
+              src={user?.picture || "/default-avatar.png"}
               alt="Profile"
               className="profile-img"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             />
+
             <FaChevronDown
               className="dropdown-icon"
               onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -54,8 +55,14 @@ const Navbar = () => {
 
             {dropdownOpen && (
               <div className="dropdown-menu">
+                <Link to="/profile" className="flex items-center gap-2">
+                  <FaUser /> Profile
+                </Link>
                 <Link to="/support">Support</Link>
-                <button onClick={handleLogout} className="logout-btn">
+                <button
+                  onClick={handleLogout}
+                  className="logout-btn text-red-600 hover:text-red-800 flex items-center gap-2"
+                >
                   <FaSignOutAlt /> Logout
                 </button>
               </div>

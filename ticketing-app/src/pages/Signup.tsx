@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import API_BASE_URL from "../api/api";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   // State for form inputs
@@ -20,7 +21,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) navigate('/', { replace: true });
+    if (user) navigate("/", { replace: true });
   }, [user, navigate]);
 
   // Handle form submission for signup
@@ -28,51 +29,53 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      // Convert birthdate to a valid ISO string that Java can parse
-      const isoBirthdate = new Date(birthdate + "T00:00:00Z"); // Ensures no timezone issue
-
+      const isoBirthdate = new Date(birthdate + "T00:00:00Z");
       const res = await axios.post(`${API_BASE_URL}/auth/signup`, {
         f_name,
         l_name,
         email,
         password,
         phone,
-        birthdate: isoBirthdate, // 🟢 Send as Date object, Axios will stringify it properly
+        birthdate: isoBirthdate,
       });
 
       const { jwt } = res.data;
-
       localStorage.setItem("token", jwt);
       login({ name: `${f_name} ${l_name}`, email });
-      navigate("/");
+      toast.success("Signed up successfully! Redirecting to login...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500); // Delay to allow toast to show
     } catch (err: any) {
       console.error("Signup error", err.response?.data || err.message);
-      alert("Signup failed.");
+      toast.error("Signup failed!");
     }
   };
 
   return (
     <div
-      className="w-full min-h-screen flex justify-center items-center bg-cover bg-center pt-24 pb-12 px-4"
+      className="w-full min-h-screen flex justify-center items-center bg-cover bg-center pt-32 pb-8 px-4"
       style={{ backgroundImage: "url('/stadium.jpg')" }}
     >
-      <div className="bg-white bg-opacity-15 backdrop-blur-lg shadow-2xl rounded-xl p-8 w-full max-w-[480px] mx-auto">
-        {/* ✅ Logo */}
-        <div className="flex justify-center items-center mb-4">
+      <div className="bg-white bg-opacity-15 backdrop-blur-lg shadow-xl rounded-lg p-6 w-full max-w-[400px] mx-auto">
+        {/* Logo */}
+        <div className="flex justify-center items-center mb-3">
           <img
             src="/mlogo.png"
             alt="Logo"
-            className="h-16 w-auto object-contain self-center"
+            className="h-12 w-auto object-contain self-center"
           />
         </div>
 
-        {/* ✅ Title */}
-        <h2 className="text-center text-3xl font-bold text-white mb-6">Sign up</h2>
+        {/* Title */}
+        <h2 className="text-center text-2xl font-bold text-white mb-4">
+          Sign up
+        </h2>
 
-        {/* ✅ Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-3">
           {/* Name fields */}
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-2 gap-3">
             <input
               type="text"
               placeholder="First name"
@@ -95,7 +98,7 @@ const Signup = () => {
           <input
             type="email"
             placeholder="Email address"
-            className="input-field mb-4"
+            className="input-field"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -105,7 +108,7 @@ const Signup = () => {
           <input
             type="date"
             placeholder="Birthdate"
-            className="input-field mb-4"
+            className="input-field"
             value={birthdate}
             onChange={(e) => setBirthdate(e.target.value)}
             required
@@ -118,11 +121,11 @@ const Signup = () => {
             onChange={(phone) => setPhone(phone)}
             inputStyle={{
               width: "100%",
-              height: "48px",
-              borderRadius: "25px",
+              height: "40px",
+              borderRadius: "20px",
               backgroundColor: "rgba(255,255,255,0.3)",
               color: "white",
-              paddingLeft: "50px",
+              paddingLeft: "45px",
               border: "none",
               backdropFilter: "blur(8px)",
             }}
@@ -137,7 +140,7 @@ const Signup = () => {
           />
 
           {/* Password */}
-          <div className="relative mt-4">
+          <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
@@ -148,7 +151,7 @@ const Signup = () => {
             />
             <button
               type="button"
-              className="absolute right-4 top-3 text-white"
+              className="absolute right-3 top-2.5 text-white text-sm"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? "Hide" : "Show"}
@@ -156,20 +159,23 @@ const Signup = () => {
           </div>
 
           {/* Checkboxes */}
-          <div className="text-xs text-white space-y-2 mt-4">
-            <label className="flex items-start gap-2">
-              <input type="checkbox" className="mt-1" required />
-              By creating an account, I consent to receive SMS, emails, updates, events, and marketing promotions.
+          <div className="text-[10px] text-white space-y-1">
+            <label className="flex items-start gap-1.5">
+              <input type="checkbox" className="mt-0.5" required />
+              I consent to receive SMS, emails, updates, events, and promotions.
             </label>
-
-            <label className="flex items-start gap-2 text-xs">
-              <input type="checkbox" className="mt-1" required />
-              By creating an account, I agree to our <a href="#" className="underline">Terms</a> and <a href="#" className="underline">Privacy Policy</a>.
+            <label className="flex items-start gap-1.5">
+              <input type="checkbox" className="mt-0.5" required />
+              I agree to the <a href="#" className="underline">Terms</a> and{" "}
+              <a href="#" className="underline">Privacy Policy</a>.
             </label>
           </div>
 
           {/* Signup Button */}
-          <button type="submit" className="mt-4 w-full bg-white py-2.5 rounded-full shadow-xl text-lg font-bold">
+          <button
+            type="submit"
+            className="mt-3 w-full bg-white py-2 rounded-full shadow-lg text-base font-semibold"
+          >
             Sign up
           </button>
         </form>

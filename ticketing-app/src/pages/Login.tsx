@@ -2,23 +2,24 @@ import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../context/AuthContext";
 import FacebookLogin from "../components/FacebookLogin";
-import { FcGoogle } from "react-icons/fc"; // Google logo
+import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import API_BASE_URL from "../api/api";
-import { getProfile } from "../api/user"; // Added import for getProfile
+import { getProfile } from "../api/user";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { login, user } = useAuth();
   const navigate = useNavigate();
-  
+
   // State for email and password inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (user) navigate('/', { replace: true });
+    if (user) navigate("/", { replace: true });
   }, [user, navigate]);
 
   // Handle form submission for email/password login
@@ -34,36 +35,41 @@ const Login = () => {
       const { jwt } = res.data;
       localStorage.setItem("token", jwt);
 
-      // ✅ Fetch user profile after saving token
+      // Fetch user profile after saving token
       const userData = await getProfile();
       login(userData);
 
-      navigate("/");
+      toast.success("Logged in successfully!");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500); // Delay to allow toast to show
     } catch (err: any) {
       console.error("Login error", err.response?.data || err.message);
-      alert("Login failed.");
+      toast.error("Login failed!");
     }
   };
 
   return (
     <div className="auth-container">
-      {/* ✅ Logo above title */}
+      {/* Logo above title */}
       <div className="flex justify-center mb-2">
         <img
-          src="/mlogo.png" // Replace with your image path in the public folder
+          src="/mlogo.png"
           alt="Logo"
-          className="h-16 w-auto object-contain" // Increased height to 64px, width adjusts automatically
+          className="h-16 w-auto object-contain"
         />
       </div>
 
-      {/* ✅ Title */}
+      {/* Title */}
       <h2 className="text-center text-2xl font-bold text-white">Log in</h2>
       <p className="text-center text-white">
         Don't have an account?{" "}
-        <a href="/signup" className="text-blue-400 font-semibold">Sign up</a>
+        <a href="/signup" className="text-blue-400 font-semibold">
+          Sign up
+        </a>
       </p>
 
-      {/* ✅ Social Login Buttons */}
+      {/* Social Login Buttons */}
       <div className="flex flex-col items-center space-y-3 w-full mt-4">
         <FacebookLogin />
 
@@ -80,19 +86,25 @@ const Login = () => {
                 email: decoded.email,
                 picture: decoded.picture,
               });
-              window.location.href = "/";
+              toast.success("Logged in with Google!");
+              setTimeout(() => {
+                navigate("/");
+              }, 1500); // Delay to allow toast to show
             }}
-            onError={() => console.error("Google Login Failed")}
+            onError={() => {
+              console.error("Google Login Failed");
+              toast.error("Google login failed!");
+            }}
             containerProps={{
               style: {
-                position: 'absolute',
+                position: "absolute",
                 opacity: 0,
-                width: '100%',
-                height: '100%',
+                width: "100%",
+                height: "100%",
                 left: 0,
                 top: 0,
-                zIndex: 1
-              }
+                zIndex: 1,
+              },
             }}
           />
         </div>
@@ -100,7 +112,7 @@ const Login = () => {
 
       <div className="text-center my-2 text-white">OR</div>
 
-      {/* ✅ Input Fields */}
+      {/* Input Fields */}
       <form className="space-y-3 w-full" onSubmit={handleSubmit}>
         <input
           type="email"
@@ -119,8 +131,11 @@ const Login = () => {
           required
         />
 
-        {/* ✅ Login Button */}
-        <button type="submit" className="auth-button bg-white text-black shadow-xl">
+        {/* Login Button */}
+        <button
+          type="submit"
+          className="auth-button bg-white text-black shadow-xl"
+        >
           Log in
         </button>
       </form>

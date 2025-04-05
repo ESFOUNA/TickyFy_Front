@@ -52,8 +52,8 @@ body, html, #root {
   font-weight: 500;
   text-decoration: none;
   transition: color 0.3s ease-in-out;
-  position: relative; /* Added for positioning the pseudo-element */
-  padding: 8px 12px; /* Added padding to give space for the rectangle */
+  position: relative;
+  padding: 8px 12px;
 }
 
 /* ✅ Hover effect with rounded rectangle */
@@ -62,21 +62,21 @@ body, html, #root {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0); /* Start scaled down */
-  width: calc(100% + 8px); /* Slightly wider than the link */
-  height: calc(100% + 4px); /* Slightly taller than the link */
-  background: rgba(255, 255, 255, 0.9); /* High opacity white */
-  border-radius: 12px; /* Rounded borders */
-  z-index: -1; /* Behind the link text */
-  transition: transform 0.3s ease-in-out; /* Smooth scaling animation */
+  transform: translate(-50%, -50%) scale(0);
+  width: calc(100% + 8px);
+  height: calc(100% + 4px);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  z-index: -1;
+  transition: transform 0.3s ease-in-out;
 }
 
 .nav-links a:hover::after {
-  transform: translate(-50%, -50%) scale(1); /* Scale up to full size on hover */
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .nav-links a:hover {
-  color: black; /* Change text color to contrast with the white background */
+  color: black;
 }
 
 /* ✅ Highlighted Support Link */
@@ -177,8 +177,8 @@ body, html, #root {
   width: 420px;
   padding: 30px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.15); /* Transparent white */
-  backdrop-filter: blur(12px); /* Blur effect */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
@@ -188,17 +188,17 @@ body, html, #root {
 /* ✅ General input fields */
 .input-field {
   width: 100%;
-  padding: 10px 15px; /* Updated from 14px */
-  border-radius: 20px; /* Updated from 12px */
-  background-color: rgba(255, 255, 255, 0.3); /* Updated from 0.2 opacity */
+  padding: 10px 15px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.2);
   color: white;
-  backdrop-filter: blur(8px); /* Added backdrop-filter */
+  backdrop-filter: blur(6px);
   border: none;
   outline: none;
 }
 
 .input-field::placeholder {
-  color: rgba(255, 255, 255, 0.8); /* Updated from 0.9 opacity */
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ✅ Phone Input specific styling */
@@ -208,7 +208,7 @@ body, html, #root {
 
 .phone-button {
   border-radius: 12px 0 0 12px !important;
-  background-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: rgba(255, 255, 255, 0.3) !important;
   border: none !important;
 }
 
@@ -254,4 +254,10 @@ body, html, #root {
   gap: 8px;
   font-size: 16px;
   font-weight: bold;
+}
+
+/* ✅ Profile Page Fixes */
+.profile-container-page {
+  background: none !important;
+  box-shadow: none !important;
 }
